@@ -39,11 +39,13 @@ class IndexController extends Action
 		$usuario->__set('email', $_POST['email']);
 		$usuario->__set('senha', md5($_POST['senha']));
 
+		//sucesso 
 		if ($usuario->validarCadastro() && count($usuario->getUsuarioPorEmail()) == 0) {
 
 			$usuario->salvar();
 
 			$this->render('cadastro');
+			//erro
 		} else {
 			$this->view->usuario = array(
 				'nome' => $_POST['nome'],
@@ -54,11 +56,5 @@ class IndexController extends Action
 			$this->view->erroCadastro = true;
 			$this->render('inscreverse');
 		}
-
-
-		//sucesso 
-
-		//erro
-
 	}
 }

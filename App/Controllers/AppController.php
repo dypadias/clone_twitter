@@ -22,6 +22,15 @@ class AppController extends Action
 
             $this->view->tweets = $tweets;
 
+            $usuario = Container::getModel('Usuario');
+            $usuario->__set('id', $_SESSION['id']);
+
+            $this->view->info_usuario = $usuario->getInfoUsuario();
+            $this->view->total_tweets = $usuario->getTotalTweets();
+            $this->view->total_seguindo = $usuario->getTotalSeguindo();
+            $this->view->total_seguidores = $usuario->getTotalSeguidores();
+
+
             $this->render('timeline');
         } else {
             header("Location: /?login=erro");
@@ -90,5 +99,20 @@ class AppController extends Action
             }
         }
         header('Location: /quem_seguir');
+    }
+    public function remover()
+    {
+        session_start();
+        if ($_SESSION['id'] != '' && $_SESSION['nome'] != '') {
+
+            $tweet = Container::getModel('Tweet');
+            $id_tweet = isset($_GET['id_tweet']) ? $_GET['id_tweet'] : '';
+            $id_tweet = $tweet->__get('id');
+            $tweet->remover(11);
+
+            print_r($id_tweet);
+
+            //header("Location: /timeline");
+        }
     }
 }
